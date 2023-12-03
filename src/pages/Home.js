@@ -1,12 +1,9 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
+
+
 
 const Home = () => {
-  return (
-    <div>
-<Link to="/starred">Go To Starred Page</Link>
-    </div>
-  )
-}
+  return <div>Home</div>;
+};
 
-export default Home
+export default Home;
