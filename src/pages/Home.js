@@ -1,12 +1,53 @@
-import React from 'react';
-import {Link} from 'react-router-dom';
+import React, { useState } from 'react';
+import { searchForShows, searchForPeople } from '../api/tvmaze';
+import SearchForm from '../components/SearchForm';
+import ShowGrid from '../components/shows/ShowGrid';
+import ActorsGrid from '../components/actors/ActorsGrid';
+import { useQuery } from '@tanstack/react-query';
+import { TextCenter } from '../components/common/TextCenter';
 
 const Home = () => {
+  const [filter, setFilter] = useState(null);
+
+  const { data: apiData, error: apiDataError } = useQuery({
+    queryKey: ['search', filter],
+    queryFn: () =>
+      filter.serachOption === 'shows'
+        ? searchForShows(filter.q)
+        : searchForPeople(filter.q),
+    enabled: !!filter,
+    refetchOnWindowFocus: false,
+  });
+
+  const onSearch = async ({ q, serachOption }) => {
+    setFilter({ q, serachOption });
+  };
+
+  const renderApiData = () => {
+      if (apiDataError) {
+        return <TextCenter>Error Occurred: {apiDataError.message}</TextCenter>;
+      }
+
+    if (apiData?.length === 0) {
+      return <TextCenter>No Results</TextCenter>;
+    } 
+
+    if (apiData) {
+      return apiData[0]?.show ? (
+        <ShowGrid shows={apiData} />
+      ) : (
+        <ActorsGrid actors={apiData} />
+      );
+    }
+
+    return null;
+  };
   return (
     <div>
-<Link to="/starred">Go To Starred Page</Link>
+      <SearchForm onSearch={onSearch} />
+      <div>{renderApiData()}</div>
     </div>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;
