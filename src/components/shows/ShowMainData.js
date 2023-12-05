@@ -1,11 +1,12 @@
-import React from 'react';
-import styled from 'styled-components';
-import { StarIcon } from '../common/StarIcon';
+import React from "react";
+import styled from "styled-components";
+import { StarIcon } from "../common/StarIcon";
+import notFoundImage from "../../lib/imageNotFound.png";
 const ShowMainData = ({ image, name, rating, summary, genres }) => {
   return (
     <MainDataWrapper>
       <div className="img-wrap ">
-        <img src={image ? image.original : '/imageNotFound.png'} alt={name} />
+        <img src={image ? image.original : notFoundImage} alt={name} />
       </div>
 
       <DataSection>
@@ -13,7 +14,7 @@ const ShowMainData = ({ image, name, rating, summary, genres }) => {
           <h1>{name}</h1>
           <div>
             <StarIcon active />
-            <span>{rating.average || 'N/A'}</span>
+            <span>{rating.average || "N/A"}</span>
           </div>
         </Headline>
 
@@ -22,7 +23,7 @@ const ShowMainData = ({ image, name, rating, summary, genres }) => {
         <div>
           Geners:
           <Genres>
-            {genres.map(genre => (
+            {genres.map((genre) => (
               <span key={genre}>{genre}</span>
             ))}
           </Genres>
